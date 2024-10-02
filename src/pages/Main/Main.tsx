@@ -2,13 +2,12 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import { useSearchCityQuery } from "../../services/apiWeather";
 import { fixTemperature } from "../../helpers/FixTemperature";
-
-
+import { useDebounce } from "../../hooks/useDebounce";
 
 const Main = () => {
     const [city, setCity] = useState<string>("");
-    const { data: cityData, error, isLoading } = useSearchCityQuery(city || '', { skip: !city })
-    console.log(cityData);
+    const debouncedCity = useDebounce(city, 1500)
+    const { data: cityData, error, isLoading } = useSearchCityQuery(debouncedCity || '', { skip: !debouncedCity })
 
     return (
         <div className={styles.container}>
